@@ -1,27 +1,25 @@
+from random import randint
+
+
 def valida_cpf(cpf=''):
     from time import sleep
     cpf = cpf.strip()
     primeiro_digito = segundo_digito = 0
     if cpf == '':
-        print('CPF não informado')
+        return False
     elif '.' in cpf or '-' in cpf:
         cpf = cpf.replace('.', '')
         cpf = cpf.replace('-', '')
-    if len(cpf) == 11:
-        print('Deixa eu verificar...')
-        sleep(1)
-    else:
-        print('O CPF não tem 11 números.')
+    if len(cpf) != 11:
+        return False
     try:
         int(cpf)
     except (TypeError, ValueError):
-        print('Erro no tipo ou valor.')
-    except Exception as causa:
-        print(f'A causa do erro foi {causa.__cause__}')
+        return False
     else:
         try:
             lista = []
-            numeros_docpf = {} # primeiro o peso, depois o número.
+            numeros_docpf = {}  # primeiro o peso, depois o número.
             pos = 0
             # compondo o dicionario
             for c in range(10, 1, -1):
@@ -51,7 +49,6 @@ def valida_cpf(cpf=''):
                 segundo_digito = 0
             else:
                 segundo_digito = 11 - segundo_digito
-            print(f'O primeiro digito é ou deveria ser {primeiro_digito} e o segundo {segundo_digito}')
             cpf = str(cpf)
             if (str(primeiro_digito) == cpf[9]) and (str(segundo_digito) == cpf[10]):
                 return True
@@ -61,12 +58,12 @@ def valida_cpf(cpf=''):
             return erro.__class__
 
 
-situacao = valida_cpf(input('CPF: '))
-print(f'Situação: {situacao}')
-print('-'*40)
-
-# from random import randint
-# Gera um possível número de CPF aleatório, para testar.
-'''aleatorio = randint(10000000000, 99999999999)
-print(aleatorio)
-print(valida_cpf(str(aleatorio)))'''
+# Só vai executar esse código abaixo se esse arquivo for executado.
+# Sendo assim, a função pode ser utilizada externamente,
+if __name__ == '__main__':
+    from time import sleep
+    lista_de_cpfs = ['397.759.960-74', '42149021064', '12345678911', '', '689.683.960-00', 'abcdefghijk', '20085724041']
+    for valor in lista_de_cpfs:
+        valor_verificado = valida_cpf(valor)
+        print(valor_verificado)
+        sleep(0.4)
